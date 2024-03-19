@@ -36,6 +36,7 @@ public class Runner {
             LinesConsumer consumer = new LinesConsumer(lines, producerFinished);
             consumers.submit(consumer);
         }
+        consumers.shutdown();
         consumers.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
     }
 }
