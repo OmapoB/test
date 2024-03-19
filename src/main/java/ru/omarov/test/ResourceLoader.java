@@ -1,7 +1,5 @@
 package ru.omarov.test;
 
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -10,16 +8,39 @@ import java.util.Properties;
 public class ResourceLoader {
     private static final Properties properties = new Properties();
 
-    public static Properties getProperties() {
+    static {
         try {
             properties.load(
                     new InputStreamReader(ResourceLoader.class.getResourceAsStream("/app.config"),
                                           StandardCharsets.UTF_8)
             );
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("нет файла конфига", e);
         }
-        return properties;
+    }
+
+    public static String getProperty(String name) {
+        return properties.getProperty(name);
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

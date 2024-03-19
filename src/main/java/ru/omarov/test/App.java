@@ -1,7 +1,5 @@
 package ru.omarov.test;
 
-import ru.omarov.test.Runner;
-
 public class App {
     public static void main(String[] args) throws InterruptedException {
         Runner runner = new Runner();

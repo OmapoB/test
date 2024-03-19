@@ -15,28 +15,16 @@ public class LinesConsumer implements Runnable {
 
     @Override
     public void run() {
-        try {
-            consume();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void consume() {
         while (!(producerFinished.get() && lines.isEmpty())) {
-            if (!lines.isEmpty()) {
-                String line = lines.poll();
-                count(line);
-            }
+            String line = lines.poll();
+            count(line);
         }
     }
 
     private void count(String where) {
-        int count = 0;
+        if (where == null)
+            return;
         Matcher matcher = Runner.PATTERN.matcher(where);
-        while (matcher.find()) {
-            count++;
-        }
-        Runner.matches.addAndGet(count);
+        Runner.matches.addAndGet( matcher.results().count() );
     }
 }

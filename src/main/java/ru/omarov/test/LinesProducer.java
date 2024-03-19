@@ -1,7 +1,6 @@
 package ru.omarov.test;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -17,20 +16,21 @@ public class LinesProducer implements Runnable {
     public LinesProducer(ConcurrentLinkedQueue<String> lines, AtomicBoolean finished) {
         this.lines = lines;
         this.finished = finished;
-        this.inputFile = ResourceLoader.getProperties().getProperty("inputFile");
+        this.inputFile = ResourceLoader.getProperty("inputFile");
     }
 
     @Override
     public void run() {
         try {
             produce();
-        } catch (IOException | InterruptedException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            finished.set(true);
         }
-        finished.set(true);
     }
 
-    private void produce() throws IOException, InterruptedException {
+    private void produce() throws IOException {
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(getClass().getResourceAsStream(inputFile), StandardCharsets.UTF_8))
         ) {
